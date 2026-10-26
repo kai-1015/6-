@@ -1,4 +1,3 @@
-import PostDetails from '../components/PostDetails.jsx';
 import { posts } from './posts.js';
 
 //記事一覧（ホーム画面）

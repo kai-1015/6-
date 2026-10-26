@@ -8,7 +8,7 @@ export default function PostsDetail({ post }) {
       <img
         src={thumbnailUrl}
         alt={title}
-        className="w-[30%] h-fullobject-cover"
+        className="w-[30%]"
       />
 
       {/* 右側：記事情報全体 */}
