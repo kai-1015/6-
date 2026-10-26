@@ -8,7 +8,7 @@ export default function Home() {
       <h1 className="text-2xl font-bold mb-4">記事一覧</h1> 
 
       {/* 記事一覧のmapを使用した一覧データの繰り返し表示 */}
-      <div className="gap-4">
+      <div>
         {posts.map((post) => (
           <PostsDetail key={post.id} post={post} />
         ))}
