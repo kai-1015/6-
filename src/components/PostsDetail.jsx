@@ -1,7 +1,12 @@
+import { Link } from "react-router-dom";
+
 export default function PostsDetail({ post }) {
   const { title, thumbnailUrl, createdAt, categories, content } = post;
 
   return (
+    <Link 
+      to={`/posts/${post.id}`} >
+    
     <div className="flex flex-row gap-6 p-4 border-b border-gray-300">
 
       {/* 左側：サムネイル画像 */}
@@ -43,10 +48,9 @@ export default function PostsDetail({ post }) {
         {/* 記事本文 */}
          {/* 本文 */}
         <div dangerouslySetInnerHTML={{ __html: content }} 
-        className="text-sm text-gray-700 line-clamp-2" />
-        
-
-      </div>
+          className="text-sm text-gray-700 line-clamp-2" />
+        </div>
     </div>
+    </Link>
   );
 }
