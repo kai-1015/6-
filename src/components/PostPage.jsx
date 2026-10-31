@@ -7,15 +7,15 @@ export default function PostPage() {
   const { id } = useParams();
 
 // findメソッドで記事情報のidが一致する記事を取得
-const post = posts.find(
+  const post = posts.find(
   (post) => String(post.id) === id
-);
+  );
 
-if (!post) {
+    if (!post) {
   return <p>記事が見つかりません。</p>;
-}
+  }
 
-const { title, thumbnailUrl, createdAt, categories, content } = post;
+　const { title, thumbnailUrl, createdAt, categories, content } = post;
 
 
   return (
@@ -57,10 +57,14 @@ const { title, thumbnailUrl, createdAt, categories, content } = post;
         </h2>
 
         {/* 記事本文 */}
-         {/* 本文 */}
         <div dangerouslySetInnerHTML={{ __html: content }} 
         className="text-sm text-gray-700">
         </div>
+        {/* 子要素がないので、閉じタグを省略しても良い。  
+        <div
+          dangerouslySetInnerHTML={{ __html: content }}
+          className="text-sm text-gray-700"
+        />   */}
 
         {/* ホーム画面へ戻る */}
         <div className="font-bold text-blue-500 hover:underline mt-4">
