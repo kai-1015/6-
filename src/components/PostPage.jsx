@@ -8,11 +8,11 @@ export default function PostPage() {
 
 // findメソッドで記事情報のidが一致する記事を取得
   const post = posts.find(
-  (post) => String(post.id) === id
+    (post) => String(post.id) === id
   );
 
-    if (!post) {
-  return <p>記事が見つかりません。</p>;
+  if (!post) {
+    return <p>記事が見つかりません。</p>;
   }
 
 　const { title, thumbnailUrl, createdAt, categories, content } = post;
