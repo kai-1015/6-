@@ -6,7 +6,7 @@ import { posts } from "../data/posts";
 export default function PostPage() {
   const { id } = useParams();
 
-// findメソッドで記事情報のidが一致する記事を取得
+  // findメソッドで記事情報のidが一致する記事を取得
   const post = posts.find(
     (post) => String(post.id) === id
   );
@@ -58,7 +58,7 @@ export default function PostPage() {
 
         {/* 記事本文 */}
         <div dangerouslySetInnerHTML={{ __html: content }} 
-        className="text-sm text-gray-700">
+             className="text-sm text-gray-700">
         </div>
         {/* 子要素がないので、閉じタグを省略しても良い。  
         <div
