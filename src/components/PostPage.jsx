@@ -15,11 +15,11 @@ export default function PostPage() {
     return <p>記事が見つかりません。</p>;
   }
 
-　const { title, thumbnailUrl, createdAt, categories, content } = post;
+  const { title, thumbnailUrl, createdAt, categories, content } = post;
 
 
   return (
-   <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8">
 
       {/* サムネイル画像 */}
       <img
@@ -71,6 +71,6 @@ export default function PostPage() {
           <Link to="/">記事一覧へ戻る</Link>
         </div>
       </div>
-  </div>    
+    </div>    
   );
 }
