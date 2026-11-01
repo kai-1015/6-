@@ -1,4 +1,4 @@
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { posts } from "../data/posts";
 
 // ① URLからID(1or2or3)を取得 → ② find() で記事を特定 → ③ JSXで記事を表示
@@ -28,7 +28,7 @@ export default function PostPage() {
         className="w-full"
       />
 
-      {/*　記事情報全体 */}
+      {/* 記事情報全体 */}
       <div className="flex-1 min-w-0 mt-6 mb-4">
 
         {/* 日付とカテゴリー */}
@@ -57,20 +57,21 @@ export default function PostPage() {
         </h2>
 
         {/* 記事本文 */}
-        <div dangerouslySetInnerHTML={{ __html: content }} 
+        <div dangerouslySetInnerHTML={{ __html: content }}
              className="text-sm text-gray-700">
         </div>
         {/* 子要素がないので、閉じタグを省略しても良い。  
         <div
           dangerouslySetInnerHTML={{ __html: content }}
           className="text-sm text-gray-700"
-        />   */}
+        />   
+        */}
 
         {/* ホーム画面へ戻る */}
         <div className="font-bold text-blue-500 hover:underline mt-4">
           <Link to="/">記事一覧へ戻る</Link>
         </div>
       </div>
-    </div>    
+    </div>
   );
 }
