@@ -1,77 +1,110 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { posts } from "../data/posts";
 
-// ① URLからID(1or2or3)を取得 → ② find() で記事を特定 → ③ JSXで記事を表示
-// useParamsフックを使ってURLパラメータを取得
 export default function PostPage() {
   const { id } = useParams();
 
-  // findメソッドで記事情報のidが一致する記事を取得
-  const post = posts.find(
-    (post) => String(post.id) === id
-  );
+  // ① 記事・エラー・通信状態を管理
+  const [post, setPost] = useState(null);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
+  // ② IDに対応する記事をAPIから取得
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchPost = async () => {
+      setIsLoading(true);
+      setError("");
+      setPost(null);
+
+      try {
+        const res = await fetch(
+          `https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts/${id}`,
+          { signal: controller.signal }
+        );
+
+        if (!res.ok) {
+          throw new Error("記事を取得できませんでした");
+        }
+
+        const data = await res.json();
+
+        // APIのレスポンス形式に合わせて記事を取り出す
+        setPost(data.post ?? data);
+      } catch (e) {
+        if (controller.signal.aborted) return;
+
+        setError(
+          e instanceof Error ? e.message : "通信に失敗しました"
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchPost();
+
+    return () => controller.abort();
+  }, [id]);
+
+  // ③ 通信中
+  if (isLoading) {
+    return <p>読み込み中...</p>;
+  }
+
+  // ④ エラー発生時
+  if (error) {
+    return <p role="alert">エラー：{error}</p>;
+  }
+
+  // ⑤ 記事が見つからない場合
   if (!post) {
     return <p>記事が見つかりません。</p>;
   }
 
-  const { title, thumbnailUrl, createdAt, categories, content } = post;
+  // ⑥ 記事データを取り出す
+  const {
+    title,
+    thumbnailUrl,
+    createdAt,
+    categories,
+    content,
+  } = post;
 
-
+  // ⑦ 記事詳細を表示
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-
-      {/* サムネイル画像 */}
       <img
         src={thumbnailUrl}
         alt={title}
-        className="w-full"
+        className="w-full mt-6"
       />
 
-      {/* 記事情報全体 */}
-      <div className="flex-1 min-w-0 mt-6 mb-4">
+      <p className="mt-6 text-sm text-gray-500">
+        {new Date(createdAt).toLocaleDateString("ja-JP")}
+      </p>
 
-        {/* 日付とカテゴリー */}
-        <div className="flex items-center gap-2">
-          <p className="text-sm text-gray-500">
-            {new Date(createdAt).toLocaleDateString("ja-JP", {
-              year: "numeric",
-              month: "long",
-              day: "2-digit",
-              timeZone: "Asia/Tokyo",
-            })}
-          </p>
-
-          {categories.map((category) => (
-            <span
-              key={category}
-              className="bg-gray-200 text-gray-800 rounded-full px-3">
-              {category}
-            </span>
-          ))}
-        </div>
-
-        {/* 記事タイトル */}
-        <h2 className="text-xl font-bold mx-2 my-4">
-          {title}
-        </h2>
-
-        {/* 記事本文 */}
-        <div dangerouslySetInnerHTML={{ __html: content }}
-             className="text-sm text-gray-700">
-        </div>
-        {/* 子要素がないので、閉じタグを省略しても良い。  
-        <div
-          dangerouslySetInnerHTML={{ __html: content }}
-          className="text-sm text-gray-700"
-        />   
-        */}
-
-        {/* ホーム画面へ戻る */}
-        <div className="font-bold text-blue-500 hover:underline mt-4">
-          <Link to="/">記事一覧へ戻る</Link>
-        </div>
+      <div className="flex gap-2 mt-2">
+        {categories?.map((category, index) => (
+          <span key={index}>{category}</span>
+        ))}
       </div>
+
+      <h1 className="text-2xl font-bold my-4">
+        {title}
+      </h1>
+
+      <div
+        className="text-sm text-gray-700"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+
+      <Link to="/" className="text-blue-600">
+        記事一覧へ戻る
+      </Link>
     </div>
   );
 }
